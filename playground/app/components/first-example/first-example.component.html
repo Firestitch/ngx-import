@@ -1,0 +1,21 @@
+<div *ngIf="!result">
+
+  <fs-import-config [config]="config"></fs-import-config>
+
+  <p>
+    <fs-file (select)="select($event)">
+      <button mat-raised-button color="primary">Upload File</button>
+    </fs-file>
+  </p>
+
+  <!--
+  <md-button class="md-primary md-raised" ngf-select="upload($file)">Upload File</md-button>
+  <md-button class="md-primary md-raised" ng-click="sample()">Download Sample File</md-button>
+  -->
+</div>
+<!--
+<p *ngIf="result">
+  <fs-import-result fs-result="result"></fs-import-result>
+  <md-button class="md-primary md-raised" ng-click="result=null">Upload Again</md-button>
+</p>
+-->
