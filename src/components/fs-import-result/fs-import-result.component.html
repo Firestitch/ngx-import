@@ -1,3 +1,41 @@
-<b>fs-component.component.html</b>
-<div>Template goes here</div>
+<fs-message
+*ngIf="result.success.count"
+fsType="success"
+fsMessage="{{ result.success.message ? result.success.message : result.success.count + ' Successfully imported' }}">
+</fs-message>
 
+<fs-message
+*ngIf="result.duplicate.count"
+fsType="info"
+fsMessage="{{
+  result.duplicate.message ?
+  result.duplicate.message :
+  result.duplicate.count + ' Duplicate' + (result.duplicate.count === 1 ? '' : 's') + ' ignored' }}">
+</fs-message>
+
+<fs-message
+*ngIf="result.fail.count"
+fsType="error"
+fsMessage="{{ result.fail.message ? result.fail.message : result.fail.count + ' Failed to import' }}">
+</fs-message>
+
+<fs-list [config]="listConfig" #listResultEl>
+  <fs-list-column align="center" width="1%">
+    <ng-template fs-list-header>Row</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      {{ row.row }}
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column>
+    <ng-template fs-list-header>Preview</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      {{ row.preview }}
+    </ng-template>
+  </fs-list-column>
+  <fs-list-column>
+    <ng-template fs-list-header>Reason</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      <div *ngFor="let message of row.messages">{{ message }}</div>
+    </ng-template>
+  </fs-list-column>
+</fs-list>

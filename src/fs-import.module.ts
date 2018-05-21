@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material';
 
 import { FsListModule } from '@firestitch/list';
+import { FsMessageModule } from '@firestitch/message';
 
 import { FsImportConfigComponent, FsImportResultComponent } from './components';
 import { FsImportService } from './services';
@@ -12,7 +13,8 @@ import { FsImportService } from './services';
   imports: [
     CommonModule,
     FsListModule,
-    MatIconModule
+    FsMessageModule,
+    MatIconModule,
   ],
   exports: [
     FsImportConfigComponent,

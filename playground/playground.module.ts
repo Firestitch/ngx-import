@@ -10,14 +10,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FsExampleModule } from '@firestitch/example';
 import { FsStoreModule, FsStore } from '@firestitch/store';
 import { FsFileModule } from '@firestitch/file';
-import { FsTransferModule } from '@firestitch/transfer';
-import { FS_TRANSFER_HANDLER, FsTransferService } from '@firestitch/transfer';
+import { FsTransferModule, FS_TRANSFER_HANDLER, FsTransferService } from '@firestitch/transfer';
 import { FsApiModule } from '@firestitch/api';
+import { FsMessage } from '@firestitch/message';
 
 import { AppComponent } from './app/app.component';
 import { FsImportModule } from '../src';
 import { AppMaterialModule } from './app/material.module';
 import { FirstExampleComponent } from './app/components/first-example/first-example.component';
+import { TransferHandler } from './app/handlers/transfer.handler';
 
 
 @NgModule({
@@ -43,7 +44,13 @@ import { FirstExampleComponent } from './app/components/first-example/first-exam
     FirstExampleComponent
   ],
   providers: [
-    FsStore
+    FsStore,
+    FsTransferService,
+    {
+      provide: FS_TRANSFER_HANDLER,
+      useClass: TransferHandler,
+      deps: [ FsMessage, FsStore ]
+    }
   ],
 })
 export class PlaygroundModule {

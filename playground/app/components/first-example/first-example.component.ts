@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FsApi } from '@firestitch/api';
 
+import { FsTransferService } from '@firestitch/transfer';
+
 
 @Component({
   selector: 'first-example',
@@ -12,7 +14,7 @@ export class FirstExampleComponent implements OnInit {
 
   public config = null;
 
-  constructor(private fsApi: FsApi) { }
+  constructor(private fsApi: FsApi, private transfer: FsTransferService) { }
 
   ngOnInit() {
     this.fsApi.get('https://boilerplate.firestitch.com/api/imports/config')
@@ -24,7 +26,11 @@ export class FirstExampleComponent implements OnInit {
   select(fsFile) {
     this.fsApi.post('https://boilerplate.firestitch.com/api/imports/result', { file: fsFile.file })
     .subscribe(response => {
-      this.result = response;
+      this.result = response['data'].result;
     });
+  }
+
+  sample() {
+    return this.transfer.post(`https://boilerplate.firestitch.com/api/imports/sample`);
   }
 }

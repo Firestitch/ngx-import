@@ -6,16 +6,13 @@
     <fs-file (select)="select($event)">
       <button mat-raised-button color="primary">Upload File</button>
     </fs-file>
+    <button mat-raised-button color="primary" (click)="sample()">Download Sample File</button>
   </p>
-
-  <!--
-  <md-button class="md-primary md-raised" ngf-select="upload($file)">Upload File</md-button>
-  <md-button class="md-primary md-raised" ng-click="sample()">Download Sample File</md-button>
-  -->
 </div>
-<!--
-<p *ngIf="result">
-  <fs-import-result fs-result="result"></fs-import-result>
-  <md-button class="md-primary md-raised" ng-click="result=null">Upload Again</md-button>
-</p>
--->
+
+<div *ngIf="result">
+  <fs-import-result [result]="result"></fs-import-result>
+  <p>
+    <button mat-raised-button color="primary" (click)="result = null">Upload Again</button>
+  </p>
+</div>
