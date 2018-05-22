@@ -10,7 +10,7 @@ import { FsImportResult } from './../../interfaces';
 
 @Component({
   selector: 'fs-import-result',
-  templateUrl: 'fs-import-result.component.html',
+  templateUrl: './fs-import-result.component.html',
   styleUrls: [ './fs-import-result.component.scss' ],
 })
 export class FsImportResultComponent implements OnInit, DoCheck {

@@ -11,7 +11,7 @@ import { FsImportConfig } from './../../interfaces';
 
 @Component({
   selector: 'fs-import-config',
-  templateUrl: 'fs-import-config.component.html',
+  templateUrl: './fs-import-config.component.html',
   styleUrls: [ './fs-import-config.component.scss' ]
 })
 export class FsImportConfigComponent implements OnInit, OnChanges {
