@@ -45,6 +45,7 @@ export class FsImportConfigComponent implements OnInit, OnChanges {
     if (!this.config) {
       return;
     }
+
     // Data populating to the list without async queries. List has no enough time to init.
     // @TODO looking for better pattern to load list without timeout
     setTimeout(() => {

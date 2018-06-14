@@ -44,7 +44,8 @@
     "@types/jasmine": "2.5.53",
     "@types/node": "^6.0.99",
     "@firestitch/example": "^0.2.21",
-    "@firestitch/list": "^0.1.44",
+    "@firestitch/filter": "^0.1.30",
+    "@firestitch/list": "^0.1.48",
     "@firestitch/datepicker": "^0.1.13",
     "@firestitch/store": "^0.1.6",
     "@firestitch/common": "^0.2.2",
@@ -52,6 +53,7 @@
     "@firestitch/transfer": "^0.1.0",
     "@firestitch/api": "^0.1.12",
     "@firestitch/message": "0.1.18",
+    "tsmodels": "^0.4.6",
     "moment-timezone": "^0.5.14",
     "moment-range": "^3.1.1",
     "iscroll": "^5.2.0",
@@ -125,7 +127,7 @@
     "node": ">=6.0.0"
   },
   "peerDependencies": {
-    "@firestitch/list": ">=0.1.44",
+    "@firestitch/list": ">=0.1.48",
     "@firestitch/message": ">=0.1.18"
   },
   "dependencies": {}
