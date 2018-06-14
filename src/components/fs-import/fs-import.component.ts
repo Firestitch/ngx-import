@@ -1,6 +1,7 @@
 import { Component, Input, ContentChild, ViewChild, TemplateRef, OnInit, OnChanges } from '@angular/core';
 
 import { FsListConfig, FsListComponent } from '@firestitch/list';
+import { FsMessage } from '@firestitch/message';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
@@ -46,7 +47,7 @@ export class FsImportComponent implements OnInit, OnChanges {
 
   private $import: Subscriber<FsImportResult> = null;
 
-  constructor(private fsImportService: FsImportService) { }
+  constructor(private fsImportService: FsImportService, private fsMessage: FsMessage) { }
 
   ngOnInit() {
     this.listConfig = {
@@ -100,8 +101,9 @@ export class FsImportComponent implements OnInit, OnChanges {
         this.listResultEl.load();
       }
     },
-    () => {
+    response => {
       this._mode = 'config';
+      this.fsMessage.error(response.error.message);
     });
   }
 
