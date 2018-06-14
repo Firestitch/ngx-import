@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { FsApi } from '@firestitch/api';
 
+import { FsMessage } from '@firestitch/message';
 import { FsTransferService } from '@firestitch/transfer';
 
 
@@ -10,27 +11,39 @@ import { FsTransferService } from '@firestitch/transfer';
 })
 export class FirstExampleComponent implements OnInit {
 
-  public result = null;
+  @ViewChild('fsImport') fsImport = null;
 
-  public config = null;
-
-  constructor(private fsApi: FsApi, private transfer: FsTransferService) { }
+  constructor(private fsApi: FsApi, private fsMessage: FsMessage, private transfer: FsTransferService) { }
 
   ngOnInit() {
-    this.fsApi.get('https://boilerplate.firestitch.com/api/imports/config')
-    .subscribe(response => {
-      this.config = response['data'].config;
-    });
   }
 
-  select(fsFile) {
-    this.fsApi.post('https://boilerplate.firestitch.com/api/imports/result', { file: fsFile.file })
-    .subscribe(response => {
-      this.result = response['data'].result;
-    });
+  config = () => {
+    return this.fsApi.get('https://boilerplate.firestitch.com/api/imports/config')
+      .map(response => response['data'].config);
+  }
+
+  import(fsFile) {
+    this.fsImport.import(
+      this.fsApi.post('https://boilerplate.firestitch.com/api/imports/result', { file: fsFile.file })
+        .map(response => response['data'].result)
+    );
   }
 
   sample() {
     return this.transfer.post(`https://boilerplate.firestitch.com/api/imports/sample`);
+  }
+
+  reset() {
+    this.fsImport.reset();
+  }
+
+  close() {
+    this.fsMessage.success('Greetings, abstract dialog successfully closed');
+  }
+
+  cancel() {
+    this.fsMessage.success('Import was canceled');
+    this.fsImport.cancel();
   }
 }

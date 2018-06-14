@@ -1,18 +1,21 @@
-<div *ngIf="!result">
+<fs-import [config]="config" #fsImport>
+  <ng-template fsImportConfigFooter></ng-template>
+  <ng-template fsImportResultFooter></ng-template>
+</fs-import>
 
- <fs-import-config [config]="config"></fs-import-config>
-
-  <p>
-    <fs-file (select)="select($event)">
-      <button mat-raised-button color="primary">Upload File</button>
+<fieldset>
+  <div *ngIf="fsImport.mode === 'config'">
+    <fs-file (select)="import($event)">
+        <button mat-raised-button color="primary">Upload File</button>
     </fs-file>
     <button mat-raised-button color="primary" (click)="sample()">Download Sample File</button>
-  </p>
-</div>
-
-<div *ngIf="result">
-  <fs-import-result [result]="result"></fs-import-result>
-  <p>
-    <button mat-raised-button color="primary" (click)="result = null">Upload Again</button>
-  </p>
-</div>
+    <button mat-raised-button (click)="close()">Close</button>
+  </div>
+  <div *ngIf="fsImport.mode === 'processing'">
+    <button mat-raised-button (click)="cancel()">Cancel</button>
+  </div>
+  <div *ngIf="fsImport.mode === 'result'">
+    <button mat-raised-button color="primary" (click)="reset()">Upload Again</button>
+    <button mat-raised-button (click)="close()">Close</button>
+  </div>
+</fieldset>

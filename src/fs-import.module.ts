@@ -1,11 +1,12 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatProgressSpinnerModule } from '@angular/material';
 
 import { FsListModule } from '@firestitch/list';
 import { FsMessageModule } from '@firestitch/message';
 
-import { FsImportConfigComponent, FsImportResultComponent } from './components';
+import { FsImportComponent } from './components';
+import { FsImportConfigFooterDirective, FsImportResultFooterDirective } from './directives';
 import { FsImportService } from './services';
 
 
@@ -15,16 +16,19 @@ import { FsImportService } from './services';
     FsListModule,
     FsMessageModule,
     MatIconModule,
+    MatProgressSpinnerModule
   ],
   exports: [
-    FsImportConfigComponent,
-    FsImportResultComponent
+    FsImportComponent,
+    FsImportConfigFooterDirective,
+    FsImportResultFooterDirective
   ],
   entryComponents: [
   ],
   declarations: [
-    FsImportConfigComponent,
-    FsImportResultComponent
+    FsImportComponent,
+    FsImportConfigFooterDirective,
+    FsImportResultFooterDirective
   ],
   providers: [
     FsImportService
