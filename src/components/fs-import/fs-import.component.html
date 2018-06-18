@@ -10,7 +10,7 @@
       <fs-list-column align="center">
         <ng-template fs-list-header>Required</ng-template>
         <ng-template fs-list-cell let-row="row">
-          <mat-icon class="required" *ngIf="row.validations.required">check</mat-icon>
+          <mat-icon class="required" *ngIf="row.validations && row.validations.required">check</mat-icon>
         </ng-template>
       </fs-list-column>
       <fs-list-column>
