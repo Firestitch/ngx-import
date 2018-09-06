@@ -45,7 +45,7 @@
     "@types/node": "^6.0.99",
     "@firestitch/example": "^0.2.21",
     "@firestitch/filter": "^0.2.31",
-    "@firestitch/list": "^0.1.48",
+    "@firestitch/list": "^0.1.94",
     "@firestitch/scroll": "^0.1.16",
     "@firestitch/datepicker": "^0.1.13",
     "@firestitch/store": "^0.1.6",
