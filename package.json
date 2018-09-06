@@ -1,7 +1,7 @@
 {
   "name": "@firestitch/import",
   "description": "@firestitch/import",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/fs-import"
@@ -44,8 +44,9 @@
     "@types/jasmine": "2.5.53",
     "@types/node": "^6.0.99",
     "@firestitch/example": "^0.2.21",
-    "@firestitch/filter": "^0.1.30",
+    "@firestitch/filter": "^0.2.31",
     "@firestitch/list": "^0.1.48",
+    "@firestitch/scroll": "^0.1.16",
     "@firestitch/datepicker": "^0.1.13",
     "@firestitch/store": "^0.1.6",
     "@firestitch/common": "^0.2.2",

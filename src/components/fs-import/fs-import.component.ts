@@ -53,9 +53,6 @@ export class FsImportComponent implements OnInit, OnChanges {
     this.listConfig = {
       status: false,
       paging: false,
-      initialFetch: false,
-      filters: [],
-      actions: [],
       fetch: query => {
         return Observable.of({ data: this.configFields });
       }
@@ -64,9 +61,6 @@ export class FsImportComponent implements OnInit, OnChanges {
     this.listResult = {
       status: false,
       paging: false,
-      initialFetch: false,
-      filters: [],
-      actions: [],
       fetch: query => {
         return Observable.of({ data: this.result.messages });
       }
@@ -81,7 +75,7 @@ export class FsImportComponent implements OnInit, OnChanges {
     this.config().subscribe((response: FsImportConfig) => {
       this.fsImportService.setIterableConfigFields(response.fields);
       this.configFields = response.fields;
-      this.listConfigEl.load();
+      this.listConfigEl.reload();
     });
   }
 
@@ -98,7 +92,7 @@ export class FsImportComponent implements OnInit, OnChanges {
       this._mode = 'result';
 
       if (this.listResultEl) {
-        this.listResultEl.load();
+        this.listResultEl.reload();
       }
     },
     response => {

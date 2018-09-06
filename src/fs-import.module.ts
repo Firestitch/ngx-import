@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule, MatProgressSpinnerModule } from '@angular/material';
 
 import { FsListModule } from '@firestitch/list';
+import { FsScrollModule } from '@firestitch/scroll';
 import { FsMessageModule } from '@firestitch/message';
 
 import { FsImportComponent } from './components';
@@ -13,7 +14,8 @@ import { FsImportService } from './services';
 @NgModule({
   imports: [
     CommonModule,
-    FsListModule,
+    FsListModule.forRoot(),
+    FsScrollModule.forRoot(),
     FsMessageModule,
     MatIconModule,
     MatProgressSpinnerModule
