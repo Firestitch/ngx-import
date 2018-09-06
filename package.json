@@ -129,6 +129,7 @@
   },
   "peerDependencies": {
     "@firestitch/list": ">=0.1.48",
+    "@firestitch/scroll": ">=0.1.16",
     "@firestitch/message": ">=0.1.18"
   },
   "dependencies": {}
