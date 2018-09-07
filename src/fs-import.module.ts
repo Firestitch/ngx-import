@@ -7,6 +7,7 @@ import { FsScrollModule } from '@firestitch/scroll';
 import { FsMessageModule } from '@firestitch/message';
 
 import { FsImportComponent } from './components';
+import { KeysPipe } from './pipes/keys.pipe';
 import { FsImportConfigFooterDirective, FsImportResultFooterDirective } from './directives';
 import { FsImportService } from './services';
 
@@ -30,7 +31,8 @@ import { FsImportService } from './services';
   declarations: [
     FsImportComponent,
     FsImportConfigFooterDirective,
-    FsImportResultFooterDirective
+    FsImportResultFooterDirective,
+    KeysPipe
   ],
   providers: [
     FsImportService

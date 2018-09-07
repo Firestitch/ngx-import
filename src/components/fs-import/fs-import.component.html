@@ -4,23 +4,40 @@
       <fs-list-column>
         <ng-template fs-list-header>Name</ng-template>
         <ng-template fs-list-cell let-row="row">
-          {{ row.name }} <div class="description">{{ row.description }}</div>
+          {{ row.name }} <div class="smaller description">{{ row.description }}</div>
         </ng-template>
       </fs-list-column>
       <fs-list-column align="center">
         <ng-template fs-list-header>Required</ng-template>
-        <ng-template fs-list-cell let-row="row">
+        <ng-template fs-list-cell let-row="row" width="1%">
           <mat-icon class="required" *ngIf="row.validations && row.validations.required">check</mat-icon>
         </ng-template>
       </fs-list-column>
       <fs-list-column>
         <ng-template fs-list-header>Validations</ng-template>
         <ng-template fs-list-cell let-row="row">
-          <ng-container *ngFor="let item of row.validationsArray">
-            <div *ngIf="item.key != 'required'">
-              <span *ngIf="item.key == 'values'">Valid values: {{ item.value.join(", ") }}</span>
-              <span *ngIf="item.key!= 'values'">Valid {{ item.key }}</span>
-            </div>
+
+          <ng-container *ngFor="let key of row.validations | keys">
+            <span *ngIf="key == 'values'">
+              <div>Valid values</div>
+              <table class="values-table">
+                <tr *ngFor="let value of row.validations['values']['array']">
+                    <td class="smaller">{{value}}</td>
+                </tr>
+              </table>
+            </span>
+            <span *ngIf="key == 'email'">Valid email address</span>
+            <span *ngIf="key == 'date'">Valid date
+              <div class="smaller">Format: YYYY-MM-DD</div>
+            </span>
+            <span *ngIf="key == 'time'">Valid time
+                <div class="smaller">Format: HH:MM:SS</div>
+            </span>
+            <span *ngIf="key == 'int'">Valid integer</span>
+            <span *ngIf="key == 'datetime'">Valid date &amp; time
+              <div class="smaller">Format: YYYY-MM-DD HH:MM:SS+ZZ:ZZ</div>
+            </span>
+            <span *ngIf="row.validations[key]['description']">{{row.validations[key]['description']}}</span>
           </ng-container>
         </ng-template>
       </fs-list-column>
@@ -75,7 +92,7 @@
         <fs-list-column>
           <ng-template fs-list-header>Reason</ng-template>
           <ng-template fs-list-cell let-row="row">
-            <div *ngFor="let message of row.messages">{{ message }}</div>
+            <div *ngFor="let message of row.messages" class="smaller">{{ message }}</div>
           </ng-template>
         </fs-list-column>
       </fs-list>

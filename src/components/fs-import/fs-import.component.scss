@@ -2,7 +2,7 @@ div[hidden] {
   display: none;
 }
 
-/deep/ fs-message {
+::ng-deep fs-message {
   > div {
     margin-bottom: 20px;
   }
@@ -26,4 +26,9 @@ div[hidden] {
 
 mat-icon.required {
   color: #34BD43;
+}
+
+.smaller {
+  font-size: 85%;
+  color: #636363;
 }
