@@ -13,7 +13,7 @@ export class FirstExampleComponent implements OnInit {
 
   @ViewChild('fsImport') fsImport = null;
 
-  public url = 'http://boilerplate.local.firestitch.com';
+  public url = 'https://boilerplate.firestitch.com';
 
   constructor(private fsApi: FsApi, private fsMessage: FsMessage, private transfer: FsTransferService) { }
 
@@ -21,19 +21,19 @@ export class FirstExampleComponent implements OnInit {
   }
 
   config = () => {
-    return this.fsApi.get(this.url + '/api/imports/config')
+    return this.fsApi.get(this.url + '/api/dummy/import/config')
       .map(response => response['data'].config);
   }
 
   import(fsFile) {
     this.fsImport.import(
-      this.fsApi.post(this.url + '/api/imports/result', { file: fsFile.file })
+      this.fsApi.post(this.url + '/api/dummy/import/result', { file: fsFile.file })
         .map(response => response['data'].result)
     );
   }
 
   sample() {
-    return this.transfer.post(this.url + `/api/imports/sample`);
+    return this.transfer.post(this.url + `/api/dummy/import/sample`);
   }
 
   reset() {
