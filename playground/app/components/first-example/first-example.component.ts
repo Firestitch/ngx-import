@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FsApi } from '@firestitch/api';
 
 import { FsMessage } from '@firestitch/message';
@@ -9,16 +9,13 @@ import { FsTransferService } from '@firestitch/transfer';
   selector: 'first-example',
   templateUrl: 'first-example.component.html'
 })
-export class FirstExampleComponent implements OnInit {
+export class FirstExampleComponent {
 
   @ViewChild('fsImport') fsImport = null;
 
   public url = 'https://boilerplate.firestitch.com';
 
   constructor(private fsApi: FsApi, private fsMessage: FsMessage, private transfer: FsTransferService) { }
-
-  ngOnInit() {
-  }
 
   config = () => {
     return this.fsApi.get(this.url + '/api/dummy/import/config')
