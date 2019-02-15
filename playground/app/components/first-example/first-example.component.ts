@@ -3,6 +3,7 @@ import { FsApi } from '@firestitch/api';
 
 import { FsMessage } from '@firestitch/message';
 import { FsTransferService } from '@firestitch/transfer';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -19,14 +20,18 @@ export class FirstExampleComponent {
 
   config = () => {
     return this.fsApi.get(this.url + '/api/dummy/import/config')
-      .map(response => response['data'].config);
-  }
+      .pipe(
+        map(response => response['data'].config),
+      );
+  };
 
   import(fsFile) {
     this.fsImport.import(
       this.fsApi.post(this.url + '/api/dummy/import/result', { file: fsFile.file })
-        .map(response => response['data'].result)
-    );
+        .pipe(
+          map(response => response['data'].result),
+        )
+    )
   }
 
   sample() {
