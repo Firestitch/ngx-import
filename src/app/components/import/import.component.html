@@ -2,7 +2,7 @@
   <div [hidden]="mode !== 'config'">
     <fs-list [config]="listConfig" #listConfigEl>
       <fs-list-column>
-        <ng-template fs-list-header>Name</ng-template>
+        <ng-template fs-list-header>Column</ng-template>
         <ng-template fs-list-cell let-row="row">
           {{ row.name }} <div class="smaller description">{{ row.description }}</div>
         </ng-template>
