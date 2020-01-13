@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ContentChild,
   Input,
@@ -24,7 +25,8 @@ import { FsImportResult } from '../../interfaces/import-result.interface';
 @Component({
   selector: 'fs-import',
   templateUrl: './import.component.html',
-  styleUrls: ['./import.component.scss']
+  styleUrls: ['./import.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsImportComponent implements OnInit, OnChanges {
 
@@ -40,23 +42,27 @@ export class FsImportComponent implements OnInit, OnChanges {
     return this._mode;
   }
 
-  @ViewChild('listConfigEl')
+  @ViewChild('listConfigEl', { static: true })
   public listConfigEl: FsListComponent = null;
   public listConfig: FsListConfig = null;
 
-  @ViewChild('listResultEl')
+  @ViewChild('listResultEl', { static: true })
   public listResultEl: FsListComponent = null;
   public listResult: FsListConfig = null;
 
-  @ContentChild(FsImportConfigFooterDirective, { read: TemplateRef })
+  @ContentChild(FsImportConfigFooterDirective, { read: TemplateRef, static: false })
   public configTemplate: FsImportConfigFooterDirective = null;
 
-  @ContentChild(FsImportResultFooterDirective, { read: TemplateRef })
+  @ContentChild(FsImportResultFooterDirective, { read: TemplateRef, static: false })
   public resultTemplate: FsImportResultFooterDirective = null;
 
   private $import: Subscriber<FsImportResult> = null;
 
-  constructor(private fsImportService: FsImportService, private fsMessage: FsMessage) {
+  constructor(
+    private fsImportService: FsImportService,
+    private fsMessage: FsMessage,
+    private cdRef: ChangeDetectorRef,
+  ) {
   }
 
   public ngOnInit() {
@@ -86,6 +92,8 @@ export class FsImportComponent implements OnInit, OnChanges {
       this.fsImportService.setIterableConfigFields(response.fields);
       this.configFields = response.fields;
       this.listConfigEl.reload();
+
+      this.cdRef.markForCheck();
     });
   }
 
@@ -96,7 +104,6 @@ export class FsImportComponent implements OnInit, OnChanges {
 
     this.$import = import$
       .subscribe(result => {
-
           this.result = result;
           this.resultHasError = !!(this.result.duplicate.count || this.result.fail.count);
           this._mode = 'result';
@@ -104,10 +111,13 @@ export class FsImportComponent implements OnInit, OnChanges {
           if (this.listResultEl) {
             this.listResultEl.reload();
           }
+
+          this.cdRef.markForCheck();
         },
         response => {
           this._mode = 'config';
           this.fsMessage.error(response.error.message);
+          this.cdRef.markForCheck();
         });
   }
 

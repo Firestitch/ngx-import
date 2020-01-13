@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { FsListModule } from '@firestitch/list';
 import { FsMessageModule } from '@firestitch/message';

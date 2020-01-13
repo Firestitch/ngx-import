@@ -39,7 +39,7 @@ import { FsListModule } from '@firestitch/list';
     FsFileModule.forRoot(),
     FsMessageModule.forRoot(),
     FsSelectionModule.forRoot(),
-    FsPromptModule.forRoot(),
+    FsPromptModule,
     FsTransferModule,
     FsApiModule,
     FsExampleModule.forRoot(),

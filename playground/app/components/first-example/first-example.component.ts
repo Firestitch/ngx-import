@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 })
 export class FirstExampleComponent {
 
-  @ViewChild('fsImport') fsImport = null;
+  @ViewChild('fsImport', { static: true }) fsImport = null;
 
   public url = 'https://boilerplate.firestitch.com';
 
