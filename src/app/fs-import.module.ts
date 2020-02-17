@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { FsListModule } from '@firestitch/list';
+import { FsSkeletonModule } from '@firestitch/skeleton';
 import { FsMessageModule } from '@firestitch/message';
 
 import { FsImportComponent } from './components/import/import.component';
@@ -19,7 +20,8 @@ import { FsImportService } from './services/import.service';
     FsListModule,
     FsMessageModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FsSkeletonModule
   ],
   exports: [
     FsImportComponent,

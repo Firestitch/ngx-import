@@ -16,3 +16,4 @@ export { FsImportField } from './app/interfaces/import-field.interface';
 // Services
 export { FsImportService } from './app/services/import.service';
 
+export { ImportMode } from './app/enums/import-mode.enum';

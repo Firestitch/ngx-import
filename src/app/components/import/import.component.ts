@@ -3,7 +3,6 @@ import {
   Component,
   ContentChild,
   Input,
-  OnChanges,
   OnInit,
   TemplateRef,
   ViewChild
@@ -20,6 +19,7 @@ import { FsImportService } from '../../services/import.service';
 import { FsImportField } from '../../interfaces/import-field.interface';
 import { FsImportConfig } from '../../interfaces/import-config.interface';
 import { FsImportResult } from '../../interfaces/import-result.interface';
+import { ImportMode } from '../../enums/import-mode.enum';
 
 
 @Component({
@@ -28,15 +28,17 @@ import { FsImportResult } from '../../interfaces/import-result.interface';
   styleUrls: ['./import.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FsImportComponent implements OnInit, OnChanges {
+export class FsImportComponent implements OnInit {
 
   @Input() public config: () => Observable<FsImportConfig> = null;
 
   public result: FsImportResult = null;
   public configFields: FsImportField[] = [];
   public resultHasError = false;
+  public loaded = false;
+  public ImportMode = ImportMode;
 
-  private _mode = 'config';
+  private _mode: ImportMode = ImportMode.Config;
 
   get mode() {
     return this._mode;
@@ -66,6 +68,15 @@ export class FsImportComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit() {
+
+    this.config()
+    .subscribe((response: FsImportConfig) => {
+      this.fsImportService.setIterableConfigFields(response.fields);
+      this.configFields = response.fields;
+      this.loaded = true;
+      this.cdRef.markForCheck();
+    });
+
     this.listConfig = {
       status: false,
       paging: false,
@@ -83,30 +94,16 @@ export class FsImportComponent implements OnInit, OnChanges {
     }
   }
 
-  public ngOnChanges() {
-    if (!this.config) {
-      return;
-    }
-
-    this.config().subscribe((response: FsImportConfig) => {
-      this.fsImportService.setIterableConfigFields(response.fields);
-      this.configFields = response.fields;
-      this.listConfigEl.reload();
-
-      this.cdRef.markForCheck();
-    });
-  }
-
   public import(import$) {
 
-    this._mode = 'processing';
+    this._mode = ImportMode.Processing;
     this.resultHasError = false;
 
     this.$import = import$
       .subscribe(result => {
           this.result = result;
           this.resultHasError = !!(this.result.duplicate.count || this.result.fail.count);
-          this._mode = 'result';
+          this._mode = ImportMode.Result;
 
           if (this.listResultEl) {
             this.listResultEl.reload();
@@ -115,7 +112,7 @@ export class FsImportComponent implements OnInit, OnChanges {
           this.cdRef.markForCheck();
         },
         response => {
-          this._mode = 'config';
+          this._mode = ImportMode.Config;
           this.fsMessage.error(response.error.message);
           this.cdRef.markForCheck();
         });
@@ -123,8 +120,9 @@ export class FsImportComponent implements OnInit, OnChanges {
 
   public reset() {
     this.result = null;
-    this._mode = 'config';
+    this._mode = ImportMode.Config;
     this.resultHasError = false;
+    this.cdRef.markForCheck();
   }
 
   public cancel() {

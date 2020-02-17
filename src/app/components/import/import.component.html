@@ -1,5 +1,5 @@
-<div [hidden]="mode === 'processing'">
-  <div [hidden]="mode !== 'config'">
+<div *fsSkeleton="loaded">
+  <div *ngIf="mode === ImportMode.Config">
     <fs-list [config]="listConfig" #listConfigEl>
       <fs-list-column>
         <ng-template fs-list-header>Column</ng-template>
@@ -51,31 +51,29 @@
     </p>
   </div>
 
-  <div [hidden]="mode !== 'result'">
-    <div *ngIf="mode === 'result'">
-      <fs-message
+  <div *ngIf="mode === ImportMode.Result">
+    <fs-message
       *ngIf="result.success.count"
       fsType="success"
       fsMessage="{{ result.success.message ? result.success.message : result.success.count + ' Successfully imported' }}">
-      </fs-message>
+    </fs-message>
 
-      <fs-message
+    <fs-message
       *ngIf="result.duplicate.count"
       fsType="info"
       fsMessage="{{
         result.duplicate.message ?
         result.duplicate.message :
         result.duplicate.count + ' Duplicate' + (result.duplicate.count === 1 ? '' : 's') + ' ignored' }}">
-      </fs-message>
+    </fs-message>
 
-      <fs-message
+    <fs-message
       *ngIf="result.fail.count"
       fsType="error"
       fsMessage="{{ result.fail.message ? result.fail.message : result.fail.count + ' Failed to import' }}">
-      </fs-message>
-    </div>
+    </fs-message>
 
-    <div [hidden]="!resultHasError">
+    <div *ngIf="resultHasError">
       <fs-list [config]="listResult" #listResultEl>
         <fs-list-column align="center" width="1%">
           <ng-template fs-list-header>Row</ng-template>
@@ -101,15 +99,15 @@
     <p>
       <ng-template
         [ngTemplateOutlet]="resultTemplate"
-        [ngTemplateOutletContext]="{}"
-      ></ng-template>
+        [ngTemplateOutletContext]="{}">
+      </ng-template>
     </p>
   </div>
-</div>
 
-<div class="progress-container" *ngIf="mode === 'processing'">
-  <div class="progress">
-    <span>Processing Import</span>
-    <mat-spinner diameter="40"></mat-spinner>
+  <div class="progress-container" *ngIf="mode === ImportMode.Processing">
+    <div class="progress">
+      <span>Processing Import</span>
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
   </div>
 </div>
