@@ -1,3 +1,4 @@
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +21,7 @@ import { FsImportService } from './services/import.service';
     FsListModule,
     FsMessageModule,
     MatIconModule,
+    MatTooltipModule,
     MatProgressSpinnerModule,
     FsSkeletonModule
   ],

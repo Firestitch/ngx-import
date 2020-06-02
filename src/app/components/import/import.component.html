@@ -90,7 +90,15 @@
         <fs-list-column>
           <ng-template fs-list-header>Reason</ng-template>
           <ng-template fs-list-cell let-row="row">
-            <div *ngFor="let message of row.messages" class="smaller">{{ message }}</div>
+            <div class="resason">
+              <mat-icon *ngIf="row.type==='fail'" class="icon-message" [ngClass]="['icon-message-' + row.type ]">report_problem</mat-icon>
+              <mat-icon *ngIf="row.type==='duplicate'" class="icon-message" [ngClass]="['icon-message-' + row.type ]">info</mat-icon>
+              <div>
+                <div *ngFor="let message of row.messages" class="messages smaller">
+                  {{ message }}
+                </div>
+              </div>
+            </div>
           </ng-template>
         </fs-list-column>
       </fs-list>
