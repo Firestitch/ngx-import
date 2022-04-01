@@ -7,6 +7,8 @@ export { FsImportModule } from './app/fs-import.module';
 
 // Components
 export { FsImportComponent } from './app/components/import/import.component';
+export { FsImportConfigFooterDirective } from './app/directives/import-config-footer.directive';
+export { FsImportResultFooterDirective } from './app/directives/import-result-footer.directive';
 
 // Interfaces
 export { FsImportResult } from './app/interfaces/import-result.interface';

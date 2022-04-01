@@ -1,6 +1,8 @@
-import { FsTransferHandler } from '@firestitch/transfer';
+import { FsTransferHandler, Request } from '@firestitch/transfer';
 import { FsMessage } from '@firestitch/message';
 import { FsStore } from '@firestitch/store';
+
+import { of } from 'rxjs';
 
 
 export class TransferHandler extends FsTransferHandler {
@@ -9,8 +11,10 @@ export class TransferHandler extends FsTransferHandler {
     super();
   }
 
-  begin(params) {
+  public begin(request: Request) {
     this.fsMessage.info('Starting download...');
+
+    return request;
   }
 
   error(data, raw) {

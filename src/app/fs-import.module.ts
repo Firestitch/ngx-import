@@ -43,7 +43,7 @@ import { FsImportService } from './services/import.service';
   ],
 })
 export class FsImportModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<FsImportModule> {
     return {
       ngModule: FsImportModule,
       providers: [FsImportService]
