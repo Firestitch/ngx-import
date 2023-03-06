@@ -53,10 +53,10 @@ export class FsImportComponent implements OnInit {
   public listResult: FsListConfig = null;
 
   @ContentChild(FsImportConfigFooterDirective, { read: TemplateRef })
-  public configTemplate: FsImportConfigFooterDirective = null;
+  public configTemplate: TemplateRef<any> = null;
 
   @ContentChild(FsImportResultFooterDirective, { read: TemplateRef })
-  public resultTemplate: FsImportResultFooterDirective = null;
+  public resultTemplate: TemplateRef<any> = null;
 
   private $import: Subscriber<FsImportResult> = null;
 
