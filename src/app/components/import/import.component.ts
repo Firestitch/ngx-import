@@ -32,6 +32,9 @@ export class FsImportComponent implements OnInit {
 
   @Input() public config: () => Observable<FsImportConfig> = null;
 
+  @Input()
+  public hidePreviewColumn: boolean;
+
   public result: FsImportResult = null;
   public configFields: FsImportField[] = [];
   public resultHasError = false;

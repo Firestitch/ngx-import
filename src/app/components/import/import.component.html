@@ -64,7 +64,7 @@
       fsMessage="{{
         result.duplicate.message ?
         result.duplicate.message :
-        result.duplicate.count + ' Duplicated' + (result.duplicate.count === 1 ? '' : 's') + ' skipped' }}">
+        result.duplicate.count + ' Duplicate' + (result.duplicate.count === 1 ? '' : 's') + ' skipped' }}">
     </fs-message>
 
     <fs-message
@@ -81,7 +81,7 @@
             {{ row.row }}
           </ng-template>
         </fs-list-column>
-        <fs-list-column>
+        <fs-list-column *ngIf="!hidePreviewColumn">
           <ng-template fs-list-header>Preview</ng-template>
           <ng-template fs-list-cell let-row="row">
             {{ row.preview }}
