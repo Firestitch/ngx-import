@@ -67,8 +67,7 @@ export class FsImportComponent implements OnInit {
     private fsImportService: FsImportService,
     private fsMessage: FsMessage,
     private cdRef: ChangeDetectorRef,
-  ) {
-  }
+  ) {}
 
   public ngOnInit() {
 
@@ -83,7 +82,7 @@ export class FsImportComponent implements OnInit {
     this.listConfig = {
       status: false,
       paging: false,
-      fetch: query => {
+      fetch: (query) => {
         return of({ data: this.configFields });
       }
     };
@@ -91,19 +90,18 @@ export class FsImportComponent implements OnInit {
     this.listResult = {
       status: false,
       paging: false,
-      fetch: query => {
+      fetch: (query) => {
         return of({ data: this.result.messages });
       }
     }
   }
 
   public import(import$) {
-
     this._mode = ImportMode.Processing;
     this.resultHasError = false;
 
     this.$import = import$
-      .subscribe(result => {
+      .subscribe((result) => {
           this.result = result;
           this.resultHasError = !!(this.result.duplicate.count || this.result.fail.count);
           this._mode = ImportMode.Result;
@@ -114,7 +112,7 @@ export class FsImportComponent implements OnInit {
 
           this.cdRef.markForCheck();
         },
-        response => {
+        (response) => {
           this._mode = ImportMode.Config;
           this.fsMessage.error(response.error.message);
           this.cdRef.markForCheck();

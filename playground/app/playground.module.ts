@@ -1,32 +1,30 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 
-import { FsExampleModule } from '@firestitch/example';
-import { FsStoreModule, FsStore } from '@firestitch/store';
-import { FsFileModule } from '@firestitch/file';
-import { FsTransferModule, FS_TRANSFER_HANDLER, FsTransferService } from '@firestitch/transfer';
 import { FsApiModule } from '@firestitch/api';
-import { FsMessage, FsMessageModule } from '@firestitch/message';
+import { FsExampleModule } from '@firestitch/example';
+import { FsFileModule } from '@firestitch/file';
 import { FsImportModule } from '@firestitch/import';
+import { FsMessage, FsMessageModule } from '@firestitch/message';
 import { FsSelectionModule } from '@firestitch/selection';
+import { FsStore, FsStoreModule } from '@firestitch/store';
+import { FS_TRANSFER_HANDLER, FsTransferModule, FsTransferService } from '@firestitch/transfer';
 
-import { ToastrModule } from 'ngx-toastr';
-
-import { AppComponent } from './app.component';
-import { AppMaterialModule } from './material.module';
-import { FirstExampleComponent } from './components/first-example/first-example.component';
-import { TransferHandler } from './handlers/transfer.handler';
+import { FsListModule } from '@firestitch/list';
 import { FsPromptModule } from '@firestitch/prompt';
 import { FsScrollModule } from '@firestitch/scroll';
-import { FsListModule } from '@firestitch/list';
+import { AppComponent } from './app.component';
+import { FirstExampleComponent } from './components/first-example/first-example.component';
+import { TransferHandler } from './handlers/transfer.handler';
+import { AppMaterialModule } from './material.module';
 
 
 @NgModule({
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -45,8 +43,6 @@ import { FsListModule } from '@firestitch/list';
     FsExampleModule.forRoot(),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
-    ToastrModule.forRoot({ preventDuplicates: true }),
-
   ],
   entryComponents: [
   ],
@@ -60,7 +56,7 @@ import { FsListModule } from '@firestitch/list';
     {
       provide: FS_TRANSFER_HANDLER,
       useClass: TransferHandler,
-      deps: [ FsMessage, FsStore ]
+      deps: [FsMessage, FsStore]
     }
   ],
 })
