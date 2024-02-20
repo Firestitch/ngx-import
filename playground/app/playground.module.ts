@@ -24,41 +24,39 @@ import { AppMaterialModule } from './material.module';
 
 
 @NgModule({
-  bootstrap: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    AppMaterialModule,
-    FormsModule,
-    RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
-    FsImportModule,
-    FsStoreModule,
-    FsFileModule.forRoot(),
-    FsMessageModule.forRoot(),
-    FsSelectionModule,
-    FsPromptModule,
-    FsTransferModule,
-    FsApiModule,
-    FsExampleModule.forRoot(),
-    FsListModule.forRoot(),
-    FsScrollModule.forRoot(),
-  ],
-  entryComponents: [
-  ],
-  declarations: [
-    AppComponent,
-    FirstExampleComponent
-  ],
-  providers: [
-    FsStore,
-    FsTransferService,
-    {
-      provide: FS_TRANSFER_HANDLER,
-      useClass: TransferHandler,
-      deps: [FsMessage, FsStore]
-    }
-  ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        AppMaterialModule,
+        FormsModule,
+        RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
+        FsImportModule,
+        FsStoreModule,
+        FsFileModule.forRoot(),
+        FsMessageModule.forRoot(),
+        FsSelectionModule,
+        FsPromptModule,
+        FsTransferModule,
+        FsApiModule,
+        FsExampleModule.forRoot(),
+        FsListModule.forRoot(),
+        FsScrollModule.forRoot(),
+    ],
+    declarations: [
+        AppComponent,
+        FirstExampleComponent
+    ],
+    providers: [
+        FsStore,
+        FsTransferService,
+        {
+            provide: FS_TRANSFER_HANDLER,
+            useClass: TransferHandler,
+            deps: [FsMessage, FsStore]
+        }
+    ]
 })
 export class PlaygroundModule {
 }

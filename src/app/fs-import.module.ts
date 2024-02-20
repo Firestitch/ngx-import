@@ -16,31 +16,29 @@ import { FsImportService } from './services/import.service';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FsListModule,
-    FsMessageModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatProgressSpinnerModule,
-    FsSkeletonModule
-  ],
-  exports: [
-    FsImportComponent,
-    FsImportConfigFooterDirective,
-    FsImportResultFooterDirective
-  ],
-  entryComponents: [
-  ],
-  declarations: [
-    FsImportComponent,
-    FsImportConfigFooterDirective,
-    FsImportResultFooterDirective,
-    KeysPipe
-  ],
-  providers: [
-    FsImportService
-  ],
+    imports: [
+        CommonModule,
+        FsListModule,
+        FsMessageModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatProgressSpinnerModule,
+        FsSkeletonModule
+    ],
+    exports: [
+        FsImportComponent,
+        FsImportConfigFooterDirective,
+        FsImportResultFooterDirective
+    ],
+    declarations: [
+        FsImportComponent,
+        FsImportConfigFooterDirective,
+        FsImportResultFooterDirective,
+        KeysPipe
+    ],
+    providers: [
+        FsImportService
+    ]
 })
 export class FsImportModule {
   static forRoot(): ModuleWithProviders<FsImportModule> {
