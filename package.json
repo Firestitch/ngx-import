@@ -56,7 +56,7 @@
     "@firestitch/datepicker": "^16.0.0",
     "@firestitch/dialog": "^16.0.0",
     "@firestitch/drawer": "^16.0.0",
-    "@firestitch/example": "^16.0.0",
+    "@firestitch/example": "^17.0.0",
     "@firestitch/file": "^16.0.0",
     "@firestitch/filter": "^16.0.1",
     "@firestitch/form": "^16.0.0",
