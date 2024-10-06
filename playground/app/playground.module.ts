@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,11 +23,11 @@ import { TransferHandler } from './handlers/transfer.handler';
 import { AppMaterialModule } from './material.module';
 
 
-@NgModule({
-    bootstrap: [AppComponent],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
+@NgModule({ bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        FirstExampleComponent
+    ], imports: [BrowserModule,
         BrowserAnimationsModule,
         AppMaterialModule,
         FormsModule,
@@ -42,21 +42,15 @@ import { AppMaterialModule } from './material.module';
         FsApiModule,
         FsExampleModule.forRoot(),
         FsListModule.forRoot(),
-        FsScrollModule.forRoot(),
-    ],
-    declarations: [
-        AppComponent,
-        FirstExampleComponent
-    ],
-    providers: [
+        FsScrollModule.forRoot()], providers: [
         FsStore,
         FsTransferService,
         {
             provide: FS_TRANSFER_HANDLER,
             useClass: TransferHandler,
             deps: [FsMessage, FsStore]
-        }
-    ]
-})
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class PlaygroundModule {
 }
