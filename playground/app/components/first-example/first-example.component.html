@@ -1,21 +1,48 @@
-<fs-import [config]="config" #fsImport>
-  <ng-template fsImportConfigFooter></ng-template>
-  <ng-template fsImportResultFooter></ng-template>
+<fs-import
+    [config]="config"
+    #fsImport>
+  <!-- <ng-template fsImportConfigFooter></ng-template>
+  <ng-template fsImportResultFooter></ng-template> -->
 </fs-import>
-
-<div fxLayout="row" fxLayoutGap="5px">
+<div class="actions">
   <ng-container *ngIf="fsImport.mode === 'config'">
     <fs-file (select)="import($event)">
-        <button mat-raised-button color="primary">Upload File</button>
+      <button
+          mat-flat-button
+          color="primary">
+        Upload File
+      </button>
     </fs-file>
-    <button mat-raised-button color="primary" (click)="sample()">Download Sample File</button>
-    <button mat-raised-button (click)="close()">Close</button>
+    <button
+        mat-stroked-button
+        color="primary"
+        (click)="sample()">
+      Download Sample File
+    </button>
+    <button
+        mat-stroked-button
+        (click)="close()">
+      Close
+    </button>
   </ng-container>
   <ng-container *ngIf="fsImport.mode === 'processing'">
-    <button mat-raised-button (click)="cancel()">Cancel</button>
+    <button
+        mat-raised-button
+        (click)="cancel()">
+      Cancel
+    </button>
   </ng-container>
   <ng-container *ngIf="fsImport.mode === 'result'">
-    <button mat-raised-button color="primary" (click)="reset()">Upload Again</button>
-    <button mat-raised-button (click)="close()">Close</button>
+    <button
+        mat-raised-button
+        color="primary"
+        (click)="reset()">
+      Upload Again
+    </button>
+    <button
+        mat-raised-button
+        (click)="close()">
+      Close
+    </button>
   </ng-container>
 </div>

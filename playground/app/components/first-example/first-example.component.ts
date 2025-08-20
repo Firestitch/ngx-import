@@ -1,53 +1,61 @@
-import { Component, ViewChild } from '@angular/core';
-import { FsApi } from '@firestitch/api';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 
+import { FsApi } from '@firestitch/api';
 import { FsMessage } from '@firestitch/message';
 import { FsTransferService } from '@firestitch/transfer';
+
 import { map } from 'rxjs/operators';
 
 
 @Component({
   selector: 'first-example',
-  templateUrl: 'first-example.component.html'
+  templateUrl: './first-example.component.html',
+  styleUrls: ['./first-example.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FirstExampleComponent {
 
-  @ViewChild('fsImport', { static: true }) fsImport = null;
+  @ViewChild('fsImport', { static: true }) 
+  public fsImport = null;
 
-  public url = 'https://boilerplate.firestitch.com';
+  public url = 'https://specify.firestitch.dev';
 
-  constructor(private fsApi: FsApi, private fsMessage: FsMessage, private transfer: FsTransferService) { }
+  constructor(
+    private _api: FsApi, 
+    private _message: FsMessage, 
+    private _transfer: FsTransferService,
+  ) { }
 
-  config = () => {
-    return this.fsApi.get(this.url + '/api/dummy/import/config')
+  public config = () => {
+    return this._api.get(`${this.url}/api/dummy/import/config`)
       .pipe(
-        map(response => response['data'].config),
+        map(({ config }) => config),
       );
   };
 
-  import(fsFile) {
+  public import(fsFile: any) {
     this.fsImport.import(
-      this.fsApi.post(this.url + '/api/dummy/import/result', { file: fsFile.file })
+      this._api.post(`${this.url  }/api/dummy/import/result`, { file: fsFile.file })
         .pipe(
-          map(response => response['data'].result),
-        )
-    )
+          map((result) => result),
+        ),
+    );
   }
 
-  sample() {
-    return this.transfer.post(this.url + `/api/dummy/import/sample`);
+  public sample() {
+    return this._transfer.post(`${this.url  }/api/dummy/import/sample`);
   }
 
-  reset() {
+  public reset() {
     this.fsImport.reset();
   }
 
-  close() {
-    this.fsMessage.success('Greetings, abstract dialog successfully closed');
+  public close() {
+    this._message.success('Greetings, abstract dialog successfully closed');
   }
 
-  cancel() {
-    this.fsMessage.success('Import was canceled');
+  public cancel() {
+    this._message.success('Import was canceled');
     this.fsImport.cancel();
   }
 }

@@ -2,7 +2,7 @@ import { Directive } from '@angular/core';
 
 
 @Directive({
-  selector: '[fsImportConfigFooter]'
+  selector: '[fsImportConfigFooter]',
 })
 export class FsImportConfigFooterDirective {
 

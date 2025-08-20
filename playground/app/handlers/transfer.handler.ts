@@ -1,8 +1,6 @@
-import { FsTransferHandler, Request } from '@firestitch/transfer';
 import { FsMessage } from '@firestitch/message';
 import { FsStore } from '@firestitch/store';
-
-import { of } from 'rxjs';
+import { FsTransferHandler, Request } from '@firestitch/transfer';
 
 
 export class TransferHandler extends FsTransferHandler {
