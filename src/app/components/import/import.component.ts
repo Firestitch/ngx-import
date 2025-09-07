@@ -1,25 +1,32 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ContentChild,
+  inject,
   Input,
   OnInit,
   TemplateRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
-import { FsListComponent, FsListConfig } from '@firestitch/list';
-import { FsMessage } from '@firestitch/message';
+import { MatIcon } from '@angular/material/icon';
 
-import { Observable, of, Subscriber } from 'rxjs';
+import { FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
+import { FsProcess } from '@firestitch/process';
 
-import { FsImportConfigFooterDirective } from '../../directives/import-config-footer.directive';
-import { FsImportResultFooterDirective } from '../../directives/import-result-footer.directive';
-import { FsImportService } from '../../services/import.service';
-import { FsImportField } from '../../interfaces/import-field.interface';
-import { FsImportConfig } from '../../interfaces/import-config.interface';
-import { FsImportResult } from '../../interfaces/import-result.interface';
+import { finalize, Observable, of, tap } from 'rxjs';
+
+import { FsImportConfigContainerDirective } from '../../directives/import-config-container.directive';
+import { FsImportResultContainerDirective } from '../../directives/import-result-container.directive';
 import { ImportMode } from '../../enums/import-mode.enum';
+import { FsImportConfig } from '../../interfaces/import-config.interface';
+import { FsImportField } from '../../interfaces/import-field.interface';
+import { FsImportResult } from '../../interfaces/import-result.interface';
+import { NanoXlsxWriter } from '../../lib/nono-writer/nano-writer';
+import { KeysPipe } from '../../pipes/keys.pipe';
+import { FsImportService } from '../../services/import.service';
+import { FsResultComponent } from '../result';
 
 
 @Component({
@@ -27,109 +34,148 @@ import { ImportMode } from '../../enums/import-mode.enum';
   templateUrl: './import.component.html',
   styleUrls: ['./import.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    FsListModule,
+    MatIcon,
+    NgTemplateOutlet,
+    KeysPipe,
+    FsResultComponent,
+  ],
 })
 export class FsImportComponent implements OnInit {
 
-  @Input() public config: () => Observable<FsImportConfig> = null;
+  @Input() public config: FsImportConfig;
 
   @Input()
   public hidePreviewColumn: boolean;
 
   public result: FsImportResult = null;
   public configFields: FsImportField[] = [];
-  public resultHasError = false;
-  public loaded = false;
   public ImportMode = ImportMode;
 
-  private _mode: ImportMode = ImportMode.Config;
+  public get processing() {
+    return this._processing;
+  }
 
-  get mode() {
+  public get mode() {
     return this._mode;
   }
 
-  @ViewChild('listConfigEl', { static: true })
+  public get modeConfig() {
+    return this._mode === ImportMode.Config;
+  }
+
+  public get modeResult() {
+    return this._mode === ImportMode.Result;
+  }
+
+  @ViewChild(FsListComponent, { static: true })
   public listConfigEl: FsListComponent = null;
   public listConfig: FsListConfig = null;
 
-  @ViewChild('listResultEl', { static: true })
-  public listResultEl: FsListComponent = null;
-  public listResult: FsListConfig = null;
+  @ContentChild(FsImportConfigContainerDirective, { read: TemplateRef })
+  public configContainerTemplate: TemplateRef<any>;
 
-  @ContentChild(FsImportConfigFooterDirective, { read: TemplateRef })
-  public configTemplate: TemplateRef<any> = null;
+  @ContentChild(FsImportResultContainerDirective, { read: TemplateRef })
+  public resultContainerTemplate: TemplateRef<any>;
 
-  @ContentChild(FsImportResultFooterDirective, { read: TemplateRef })
-  public resultTemplate: TemplateRef<any> = null;
-
-  private $import: Subscriber<FsImportResult> = null;
-
-  constructor(
-    private fsImportService: FsImportService,
-    private fsMessage: FsMessage,
-    private cdRef: ChangeDetectorRef,
-  ) {}
+  private _mode: ImportMode = ImportMode.Config;
+  private _fsImportService = inject(FsImportService);
+  private _process = inject(FsProcess);
+  private _cdRef = inject(ChangeDetectorRef);
+  private _processing = false;
 
   public ngOnInit() {
-
-    this.config()
-    .subscribe((response: FsImportConfig) => {
-      this.fsImportService.setIterableConfigFields(response.fields);
-      this.configFields = response.fields;
-      this.loaded = true;
-      this.cdRef.markForCheck();
-    });
+    this._fsImportService.setIterableConfigFields(this.config.fields);
+    this.configFields = this.config.fields;
+    this._cdRef.markForCheck();
 
     this.listConfig = {
       status: false,
       paging: false,
-      fetch: (query) => {
+      reload: false,
+      fetch: () => {
         return of({ data: this.configFields });
-      }
+      },
     };
-
-    this.listResult = {
-      status: false,
-      paging: false,
-      fetch: (query) => {
-        return of({ data: this.result.messages });
-      }
-    }
   }
 
-  public import(import$) {
-    this._mode = ImportMode.Processing;
-    this.resultHasError = false;
+  public import(import$: Observable<FsImportResult>) {
+    this._processing = true;
+    this._cdRef.markForCheck();
+    this._process.run('Processing import',   
+      import$
+        .pipe(
+          tap((result: FsImportResult) => {
+            this.result = result;
+            this._mode = ImportMode.Result;   
+            this._cdRef.markForCheck();
+          }),
+          finalize(() => {
+            this._processing = false;
+            this._cdRef.markForCheck();
+          }),
+        ));
+  }
 
-    this.$import = import$
-      .subscribe((result) => {
-          this.result = result;
-          this.resultHasError = !!(this.result.duplicate.count || this.result.fail.count);
-          this._mode = ImportMode.Result;
+  public downloadResult() {
+    const sheets = [];
+    if(this.result.fail.rows.length > 0) {
+      sheets.push({
+        name: 'Failed',
+        data: this._getSheetData(this.result.fail.rows, true),
+      });
+    }
+    
+    if(this.result.success.rows.length > 0) {
+      sheets.push({
+        name: 'Success',
+        data: this._getSheetData(this.result.success.rows),
+      });
+    }
+    
+    if(this.result.duplicate.rows.length > 0) {
+      sheets.push({
+        name: 'Duplicate',
+        data: this._getSheetData(this.result.duplicate.rows),
+      });
+    }
 
-          if (this.listResultEl) {
-            this.listResultEl.reload();
-          }
-
-          this.cdRef.markForCheck();
-        },
-        (response) => {
-          this._mode = ImportMode.Config;
-          this.fsMessage.error(response.error.message);
-          this.cdRef.markForCheck();
-        });
+    const writer = new NanoXlsxWriter({
+      sheets,
+      fileName: 'importresult.xlsx',
+    });
+    writer.save();
   }
 
   public reset() {
     this.result = null;
     this._mode = ImportMode.Config;
-    this.resultHasError = false;
-    this.cdRef.markForCheck();
+    this._cdRef.markForCheck();
   }
 
   public cancel() {
-    if (this.$import) {
-      this.reset();
-      this.$import.unsubscribe();
-    }
+    this.reset();
+  }
+
+  private _getSheetData(
+    rows: {rowNumber: number; data: any; messages: string[] }[], 
+    showMessage: boolean = false,
+  ) {
+    return [
+      [
+        ...(showMessage ? ['Reason'] : []),
+        ...this.configFields.map((field) => {
+          return field.name;
+        }),
+      ],
+      ...rows.map((row) => {
+        return [
+          ...(showMessage ? [row.messages.join(', ')] : []),
+          ...row.data,
+        ];
+      }),
+    ];
   }
 }

@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+
+import { MatButton } from '@angular/material/button';
 
 import { FsApi } from '@firestitch/api';
+import { FsFileModule } from '@firestitch/file';
+import { FsImportComponent, FsImportConfig, FsImportModule } from '@firestitch/import';
 import { FsMessage } from '@firestitch/message';
-import { FsTransferService } from '@firestitch/transfer';
 
-import { map } from 'rxjs/operators';
+import { delay, map, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -12,38 +16,49 @@ import { map } from 'rxjs/operators';
   templateUrl: './first-example.component.html',
   styleUrls: ['./first-example.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    FsFileModule,
+    MatButton,
+    FsImportModule,
+    NgTemplateOutlet,
+  ],
 })
-export class FirstExampleComponent {
+export class FirstExampleComponent implements OnInit {
 
-  @ViewChild('fsImport', { static: true }) 
-  public fsImport = null;
+  @ViewChild(FsImportComponent) 
+  public fsImport: FsImportComponent;
 
-  public url = 'https://specify.firestitch.dev';
+  public url = 'https://specify.local.firestitch.com';
+  public config: FsImportConfig;
 
-  constructor(
-    private _api: FsApi, 
-    private _message: FsMessage, 
-    private _transfer: FsTransferService,
-  ) { }
+  private _cdRef = inject(ChangeDetectorRef);
+  private _api = inject(FsApi); 
+  private _message = inject(FsMessage); 
 
-  public config = () => {
-    return this._api.get(`${this.url}/api/dummy/import/config`)
+  public ngOnInit() {
+    this._api.get(`${this.url}/api/dummy/import/config`)
       .pipe(
-        map(({ config }) => config),
-      );
-  };
+        tap(({ config }) => {
+          this.config = config;
+          this._cdRef.markForCheck();
+        }),
+      )
+      .subscribe();
+  }
 
   public import(fsFile: any) {
     this.fsImport.import(
       this._api.post(`${this.url  }/api/dummy/import/result`, { file: fsFile.file })
         .pipe(
-          map((result) => result),
+          delay(2000),
+          map(({ result }) => result),
         ),
     );
   }
 
   public sample() {
-    return this._transfer.post(`${this.url  }/api/dummy/import/sample`);
+    return this._api.download(null,'get',`${this.url}/api/dummy/import/sample`);
   }
 
   public reset() {

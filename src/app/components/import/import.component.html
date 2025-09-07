@@ -1,8 +1,14 @@
-<div *fsSkeleton="loaded">
-  <div *ngIf="mode === ImportMode.Config">
-    <fs-list
-        [config]="listConfig"
-        #listConfigEl>
+@if (mode === ImportMode.Config) {
+  @if (configContainerTemplate) {
+    <ng-container
+      [ngTemplateOutlet]="configContainerTemplate"
+      [ngTemplateOutletContext]="{ template: configTemplate }">
+    </ng-container>
+  } @else {
+    <ng-container [ngTemplateOutlet]="configTemplate"></ng-container>
+  }
+  <ng-template #configTemplate>
+    <fs-list [config]="listConfig">
       <fs-list-column>
         <ng-template fs-list-header>
           Column
@@ -24,11 +30,11 @@
             fs-list-cell
             let-row="row"
             width="1%">
-          <mat-icon
-              class="required"
-              *ngIf="row.validations && row.validations.required">
-            check
-          </mat-icon>
+          @if (row.validations && row.validations.required) {
+            <mat-icon class="required">
+              asterisk
+            </mat-icon>
+          }
         </ng-template>
       </fs-list-column>
       <fs-list-column>
@@ -38,146 +44,81 @@
         <ng-template
             fs-list-cell
             let-row="row">
-          <ng-container *ngFor="let key of row.validations | keys">
-            <span *ngIf="key === 'values'">
-              <div>
-                Valid values
-              </div>
-              <table class="values-table">
-                <tr *ngFor="let value of row.validations['values']['array']">
-                  <td class="smaller">
-                    {{ value }}
-                  </td>
-                </tr>
-              </table>
-            </span>
-            <span *ngIf="key === 'email'">
-              Valid email address
-            </span>
-            <span *ngIf="key === 'date'">
-              Valid date
-              <div class="smaller">
-                Format: YYYY-MM-DD
-              </div>
-            </span>
-            <span *ngIf="key === 'time'">
-              Valid time
-              <div class="smaller">
-                Format: HH:MM:SS
-              </div>
-            </span>
-            <span *ngIf="key === 'int'">
-              Valid integer
-            </span>
-            <span *ngIf="key === 'datetime'">
-              Valid date &amp; time
-              <div class="smaller">
-                Format: YYYY-MM-DD HH:MM:SS+ZZ:ZZ
-              </div>
-            </span>
-            <span *ngIf="row.validations[key]['description']">
-              {{ row.validations[key]['description'] }}
-            </span>
-          </ng-container>
+          @for (key of row.validations | keys; track key) {
+            @if (key === 'values') {
+              <span>
+                <div>
+                  Valid values
+                </div>
+                <table class="values-table">
+                  @for (value of row.validations['values']['array']; track value) {
+                    <tr>
+                      <td class="smaller">
+                        {{ value }}
+                      </td>
+                    </tr>
+                  }
+                </table>
+              </span>
+            }
+            @if (key === 'email') {
+              <span>
+                Valid email address
+              </span>
+            }
+            @if (key === 'date') {
+              <span>
+                Valid date
+                <div class="smaller">
+                  Format: YYYY-MM-DD
+                </div>
+              </span>
+            }
+            @if (key === 'time') {
+              <span>
+                Valid time
+                <div class="smaller">
+                  Format: HH:MM:SS
+                </div>
+              </span>
+            }
+            @if (key === 'int') {
+              <span>
+                Valid integer
+              </span>
+            }
+            @if (key === 'datetime') {
+              <span>
+                Valid date &amp; time
+                <div class="smaller">
+                  Format: YYYY-MM-DD HH:MM:SS+ZZ:ZZ
+                </div>
+              </span>
+            }
+            @if (row.validations[key]['description']) {
+              <span>
+                {{ row.validations[key]['description'] }}
+              </span>
+            }
+          }
         </ng-template>
       </fs-list-column>
     </fs-list>
-    <p>
-      <ng-template
-        [ngTemplateOutlet]="configTemplate"
-        [ngTemplateOutletContext]="{}">
-      </ng-template>
-    </p>
-  </div>
-  <div *ngIf="mode === ImportMode.Result">
-    <fs-message
-      *ngIf="result.success.count"
-      fsType="success"
-      fsMessage="{{ result.success.message ? result.success.message : result.success.count + ' Successfully imported' }}">
-    </fs-message>
-    <fs-message
-      *ngIf="result.duplicate.count"
-      fsType="info"
-      fsMessage="{{
-        result.duplicate.message ?
-        result.duplicate.message :
-        result.duplicate.count + ' Duplicate' + (result.duplicate.count === 1 ? '' : 's') + ' skipped' }}">
-    </fs-message>
-    <fs-message
-      *ngIf="result.fail.count"
-      fsType="error"
-      fsMessage="{{ result.fail.message ? result.fail.message : result.fail.count + ' Failed to import' }}">
-    </fs-message>
-    <div *ngIf="resultHasError">
-      <fs-list
-          [config]="listResult"
-          #listResultEl>
-        <fs-list-column
-            align="center"
-            width="1%">
-          <ng-template fs-list-header>
-            Row
-          </ng-template>
-          <ng-template
-              fs-list-cell
-              let-row="row">
-            {{ row.row }}
-          </ng-template>
-        </fs-list-column>
-        <fs-list-column *ngIf="!hidePreviewColumn">
-          <ng-template fs-list-header>
-            Preview
-          </ng-template>
-          <ng-template
-              fs-list-cell
-              let-row="row">
-            {{ row.preview }}
-          </ng-template>
-        </fs-list-column>
-        <fs-list-column>
-          <ng-template fs-list-header>
-            Reason
-          </ng-template>
-          <ng-template
-              fs-list-cell
-              let-row="row">
-            <div class="resason">
-              <mat-icon
-                  *ngIf="row.type==='fail'"
-                  class="icon-message"
-                  [ngClass]="['icon-message-' + row.type ]">
-                report_problem
-              </mat-icon>
-              <mat-icon
-                  *ngIf="row.type==='duplicate'"
-                  class="icon-message"
-                  [ngClass]="['icon-message-' + row.type ]">
-                info
-              </mat-icon>
-              <div>
-                <div
-                    *ngFor="let message of row.messages"
-                    class="messages smaller">
-                  {{ message }}
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </fs-list-column>
-      </fs-list>
-    </div>
-    <p>
-      <ng-template [ngTemplateOutlet]="resultTemplate"></ng-template>
-    </p>
-  </div>
-  <div
-      class="progress-container"
-      *ngIf="mode === ImportMode.Processing">
-    <div class="progress">
-      <span>
-        Processing Import
-      </span>
-      <mat-spinner diameter="40"></mat-spinner>
-    </div>
-  </div>
-</div>
+  </ng-template>
+}
+@if (mode === ImportMode.Result) {
+  @if (resultContainerTemplate) {
+    <ng-container
+      [ngTemplateOutlet]="resultContainerTemplate"
+      [ngTemplateOutletContext]="{ template: resultTemplate }">
+    </ng-container>
+  } @else {
+    <ng-container [ngTemplateOutlet]="resultTemplate"></ng-container>
+  }
+  <ng-template #resultTemplate>
+    <app-result
+      [result]="result"
+      [config]="config">
+    </app-result>
+  </ng-template>
+}

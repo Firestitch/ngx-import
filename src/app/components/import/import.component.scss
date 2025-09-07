@@ -1,13 +1,3 @@
-div[hidden] {
-  display: none;
-}
-
-::ng-deep fs-message {
-  > div {
-    margin-bottom: 20px;
-  }
-}
-
 .progress-container {
   width: 100%;
   display: flex;
@@ -25,27 +15,10 @@ div[hidden] {
 }
 
 mat-icon.required {
-  color: #34bd43;
+  color: #dd2222;
 }
 
 .smaller {
   font-size: 85%;
   color: #636363;
-}
-
-.resason {
-  flex-direction: row;
-  display: flex;
-  align-items: center;
-
-  .icon-message {
-    margin-right: 5px;
-
-    &.icon-message-fail {
-      color: #fa7567;
-    }
-    &.icon-message-duplicate {
-      color: #3ab7fb;
-    }
-  }
 }

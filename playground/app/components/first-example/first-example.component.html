@@ -1,48 +1,69 @@
-<fs-import
-    [config]="config"
-    #fsImport>
-  <!-- <ng-template fsImportConfigFooter></ng-template>
-  <ng-template fsImportResultFooter></ng-template> -->
-</fs-import>
-<div class="actions">
-  <ng-container *ngIf="fsImport.mode === 'config'">
-    <fs-file (select)="import($event)">
+@if (config) {
+  <p>
+    Mode: {{ fsImport.mode }}
+  </p>
+  <fs-import
+      [config]="config"
+      #fsImport>
+    <ng-template
+        fsImportConfigContainer
+        let-template="template">
+      <p>
+        Config Header
+      </p>
+      <ng-container [ngTemplateOutlet]="template"></ng-container>
+      <p>
+        Config Footer
+      </p>
+    </ng-template>
+    <ng-template
+        fsImportResultContainer
+        let-template="template">
+      <p>
+        Result Header
+      </p>
+      <ng-container [ngTemplateOutlet]="template"></ng-container>
+      <p>
+        Result Footer
+      </p>
+    </ng-template>
+  </fs-import>
+  <div class="actions">
+    @if (fsImport.mode === 'config') {
+      <fs-file (select)="import($event)">
+        <button
+            mat-flat-button
+            [disabled]="fsImport.processing"
+            color="primary">
+          Upload File
+        </button>
+      </fs-file>
+      <button
+          mat-stroked-button
+          color="primary"
+          [disabled]="fsImport.processing"
+          (click)="sample()">
+        Download Sample File
+      </button>
+      <button
+          mat-stroked-button
+          [disabled]="fsImport.processing"
+          (click)="close()">
+        Close
+      </button>
+    }
+    @if (fsImport.mode === 'result') {
       <button
           mat-flat-button
-          color="primary">
-        Upload File
+          color="primary"
+          (click)="reset()">
+        Upload Again
       </button>
-    </fs-file>
-    <button
-        mat-stroked-button
-        color="primary"
-        (click)="sample()">
-      Download Sample File
-    </button>
-    <button
-        mat-stroked-button
-        (click)="close()">
-      Close
-    </button>
-  </ng-container>
-  <ng-container *ngIf="fsImport.mode === 'processing'">
-    <button
-        mat-raised-button
-        (click)="cancel()">
-      Cancel
-    </button>
-  </ng-container>
-  <ng-container *ngIf="fsImport.mode === 'result'">
-    <button
-        mat-raised-button
-        color="primary"
-        (click)="reset()">
-      Upload Again
-    </button>
-    <button
-        mat-raised-button
-        (click)="close()">
-      Close
-    </button>
-  </ng-container>
-</div>
+      <button
+          mat-stroked-button
+          (click)="fsImport.downloadResult()">
+        Download Result
+      </button>
+    }
+  </div>
+}

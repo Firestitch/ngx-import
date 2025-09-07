@@ -1,50 +1,43 @@
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { FsListModule } from '@firestitch/list';
-import { FsSkeletonModule } from '@firestitch/skeleton';
 import { FsMessageModule } from '@firestitch/message';
+import { FsSkeletonModule } from '@firestitch/skeleton';
 
 import { FsImportComponent } from './components/import/import.component';
+import { FsImportConfigContainerDirective } from './directives/import-config-container.directive';
+import { FsImportResultContainerDirective } from './directives/import-result-container.directive';
 import { KeysPipe } from './pipes/keys.pipe';
-import { FsImportConfigFooterDirective } from './directives/import-config-footer.directive';
-import { FsImportResultFooterDirective } from './directives/import-result-footer.directive';
 import { FsImportService } from './services/import.service';
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FsListModule,
-        FsMessageModule,
-        MatIconModule,
-        MatTooltipModule,
-        MatProgressSpinnerModule,
-        FsSkeletonModule
-    ],
-    exports: [
-        FsImportComponent,
-        FsImportConfigFooterDirective,
-        FsImportResultFooterDirective
-    ],
-    declarations: [
-        FsImportComponent,
-        FsImportConfigFooterDirective,
-        FsImportResultFooterDirective,
-        KeysPipe
-    ],
-    providers: [
-        FsImportService
-    ]
+  imports: [
+    CommonModule,
+    FsListModule,
+    FsMessageModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    FsSkeletonModule,
+    FsImportComponent,
+    FsImportConfigContainerDirective,
+    FsImportResultContainerDirective,
+    KeysPipe,
+  ],
+  exports: [
+    FsImportComponent,
+    FsImportConfigContainerDirective,
+    FsImportResultContainerDirective,
+  ],
+  providers: [
+    FsImportService,
+  ],
 })
 export class FsImportModule {
-  static forRoot(): ModuleWithProviders<FsImportModule> {
-    return {
-      ngModule: FsImportModule,
-      providers: [FsImportService]
-    };
-  }
 }

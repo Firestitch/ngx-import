@@ -1,0 +1,121 @@
+<mat-tab-group>
+  @if (result.fail.count) {
+    <mat-tab>
+      <ng-template matTabLabel>
+        Failed ({{ result.fail.count }})
+      </ng-template>
+      <ng-template matTabContent>
+        <fs-list [config]="failedListConfig">
+          <fs-list-column
+              align="center"
+              width="1%">
+            <ng-template fs-list-header>
+              Row
+            </ng-template>
+            <ng-template
+                fs-list-cell
+                let-row="row">
+              {{ row.row }}
+            </ng-template>
+          </fs-list-column>
+          <fs-list-column>
+            <ng-template fs-list-header>
+              Reason
+            </ng-template>
+            <ng-template
+                fs-list-cell
+                let-row="row">
+              @for (message of row.messages; track message) {
+                <div>
+                  {{ message }}
+                </div>
+              }
+            </ng-template>
+          </fs-list-column>
+          @for (field of fields; track field.name; let i = $index) {
+            <fs-list-column>
+              <ng-template fs-list-header>
+                {{ field.name }}
+              </ng-template>
+              <ng-template
+                  fs-list-cell
+                  let-row="row">
+                {{ row.data[i] }}
+              </ng-template>
+            </fs-list-column>
+          }
+        </fs-list>
+      </ng-template>
+    </mat-tab>
+  }
+  @if (result.success.count) {
+    <mat-tab>
+      <ng-template matTabLabel>
+        Success ({{ result.success.count }})
+      </ng-template>
+      <ng-template matTabContent>
+        <fs-list [config]="successListConfig">
+          <fs-list-column
+              align="center"
+              width="1%">
+            <ng-template fs-list-header>
+              Row
+            </ng-template>
+            <ng-template
+                fs-list-cell
+                let-row="row">
+              {{ row.row }}
+            </ng-template>
+          </fs-list-column>
+          @for (field of fields; track field.name; let i = $index) {
+            <fs-list-column>
+              <ng-template fs-list-header>
+                {{ field.name }}
+              </ng-template>
+              <ng-template
+                  fs-list-cell
+                  let-row="row">
+                {{ row.data[i] }}
+              </ng-template>
+            </fs-list-column>
+          }
+        </fs-list>
+      </ng-template>
+    </mat-tab>
+  }
+  @if (result.duplicate.count) {
+    <mat-tab>
+      <ng-template matTabLabel>
+        Duplicates ({{ result.duplicate.count }})
+      </ng-template>
+      <ng-template matTabContent>
+        <fs-list [config]="duplicateListConfig">
+          <fs-list-column
+              align="center"
+              width="1%">
+            <ng-template fs-list-header>
+              Row
+            </ng-template>
+            <ng-template
+                fs-list-cell
+                let-row="row">
+              {{ row.row }}
+            </ng-template>
+          </fs-list-column>
+          @for (field of fields; track field.name; let i = $index) {
+            <fs-list-column>
+              <ng-template fs-list-header>
+                {{ field.name }}
+              </ng-template>
+              <ng-template
+                  fs-list-cell
+                  let-row="row">
+                {{ row.data[i] }}
+              </ng-template>
+            </fs-list-column>
+          }
+        </fs-list>
+      </ng-template>
+    </mat-tab>
+  }
+</mat-tab-group>

@@ -1,0 +1,16 @@
+.resason {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+
+  .icon-message {
+    margin-right: 5px;
+
+    &.icon-message-fail {
+      color: #fa7567;
+    }
+    &.icon-message-duplicate {
+      color: #3ab7fb;
+    }
+  }
+}
