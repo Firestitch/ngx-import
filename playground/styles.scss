@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use '@firestitch/style/styles' as fs-style;
 @import '@firestitch/component-tools/assets/playground.scss';
 @import '@firestitch/message/styles';
 @import '@firestitch/file/styles';
@@ -6,3 +7,4 @@
 
 @include mat.core();
 @include fs-file(mat.$m2-blue-palette);
+@include fs-style.core();

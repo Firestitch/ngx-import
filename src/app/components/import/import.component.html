@@ -17,24 +17,9 @@
             fs-list-cell
             let-row="row">
           {{ row.name }}
-          <div class="smaller description">
+          <div class="small description">
             {{ row.description }}
           </div>
-        </ng-template>
-      </fs-list-column>
-      <fs-list-column align="center">
-        <ng-template fs-list-header>
-          Required
-        </ng-template>
-        <ng-template
-            fs-list-cell
-            let-row="row"
-            width="1%">
-          @if (row.validations && row.validations.required) {
-            <mat-icon class="required">
-              asterisk
-            </mat-icon>
-          }
         </ng-template>
       </fs-list-column>
       <fs-list-column>
@@ -45,61 +30,48 @@
             fs-list-cell
             let-row="row">
           @for (key of row.validations | keys; track key) {
-            @if (key === 'values') {
-              <span>
-                <div>
-                  Valid values
-                </div>
-                <table class="values-table">
+            <div>
+              @if (key === 'required') {
+                Required
+              }
+              @if (key === 'values') {
+                Valid values
+                <div class="fs-delimit small">
                   @for (value of row.validations['values']['array']; track value) {
-                    <tr>
-                      <td class="smaller">
-                        {{ value }}
-                      </td>
-                    </tr>
+                    <span>
+                      {{ value }}
+                    </span>
                   }
-                </table>
-              </span>
-            }
-            @if (key === 'email') {
-              <span>
+                </div>
+              }
+              @if (key === 'email') {
                 Valid email address
-              </span>
-            }
-            @if (key === 'date') {
-              <span>
+              }
+              @if (key === 'date') {
                 Valid date
-                <div class="smaller">
+                <div class="small">
                   Format: YYYY-MM-DD
                 </div>
-              </span>
-            }
-            @if (key === 'time') {
-              <span>
+              }
+              @if (key === 'time') {
                 Valid time
-                <div class="smaller">
+                <div class="small">
                   Format: HH:MM:SS
                 </div>
-              </span>
-            }
-            @if (key === 'int') {
-              <span>
+              }
+              @if (key === 'int') {
                 Valid integer
-              </span>
-            }
-            @if (key === 'datetime') {
-              <span>
+              }
+              @if (key === 'datetime') {
                 Valid date &amp; time
-                <div class="smaller">
+                <div class="small">
                   Format: YYYY-MM-DD HH:MM:SS+ZZ:ZZ
                 </div>
-              </span>
-            }
-            @if (row.validations[key]['description']) {
-              <span>
+              }
+              @if (row.validations[key]['description']) {
                 {{ row.validations[key]['description'] }}
-              </span>
-            }
+              }
+            </div>
           }
         </ng-template>
       </fs-list-column>
