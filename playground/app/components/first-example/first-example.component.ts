@@ -29,7 +29,7 @@ export class FirstExampleComponent implements OnInit {
   @ViewChild(FsImportComponent) 
   public fsImport: FsImportComponent;
 
-  public url = 'https://specify.local.firestitch.com';
+  public url;
   public config: FsImportConfig;
 
   private _cdRef = inject(ChangeDetectorRef);
@@ -37,6 +37,11 @@ export class FirstExampleComponent implements OnInit {
   private _message = inject(FsMessage); 
 
   public ngOnInit() {
+
+    this.url = window.location.port === '8000' ? 
+      'https://specify.local.firestitch.com' : 
+      'https://specify.firestitch.dev';
+
     this._api.get(`${this.url}/api/dummy/import/config`)
       .pipe(
         tap(({ config }) => {
